@@ -1,8 +1,8 @@
-PyMuPDF==1.23.7
-fastapi==0.104.1
-uvicorn==0.23.2
-python-dotenv==1.0.0
-supabase==1.2.0
-python-multipart==0.0.6
-typing-extensions==4.8.0
-pydantic==2.4.2
+PyMuPDF
+fastapi
+uvicorn
+python-dotenv
+supabase
+python-multipart
+typing-extensions
+pydantic
