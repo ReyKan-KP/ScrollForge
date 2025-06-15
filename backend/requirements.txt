@@ -6,3 +6,4 @@ supabase
 python-multipart
 typing-extensions
 pydantic
+mangum
