@@ -77,7 +77,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/scrollforge.git
+git clone https://github.com/ReyKan-KP/ScrollForge.git
 cd scrollforge
 ```
 
@@ -204,11 +204,6 @@ curl -X GET http://localhost:8000/api/page/a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6/
 
 Response: HTML content of page 1
 
-### API Documentation
-
-The complete API documentation is available at:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
 
 ### Setting Up FastAPI Backend
 
