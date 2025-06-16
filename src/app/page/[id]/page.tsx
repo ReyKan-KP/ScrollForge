@@ -26,7 +26,7 @@ export default function Page() {
 
   // Get token from localStorage on component mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('pdf_token');
+    const storedToken = localStorage.getItem('pdf_access_token');
     if (!storedToken) {
       setError("No access token found. Please upload a PDF or load a document with a valid token.");
       setLoading(false);
@@ -160,11 +160,37 @@ export default function Page() {
   const jumpToPage = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     const target = (e.target as HTMLFormElement).pageInput.value;
-    const pageNum = parseInt(target);
-    if (pageNum >= 1 && pageNum <= totalPages) {
-      router.push(`/page/${pageNum}`);
+    let pageNum = parseInt(target);
+    
+    // Validate the input is a number and within range
+    if (isNaN(pageNum)) {
+      alert('Please enter a valid page number');
+      return;
     }
+    
+    // Ensure page number is within bounds
+    if (pageNum < 1) {
+      pageNum = 1;
+    } else if (pageNum > totalPages) {
+      pageNum = totalPages;
+    }
+    
+    router.push(`/page/${pageNum}`);
   }, [router, totalPages]);
+
+  // Set loading timeout
+  useEffect(() => {
+    if (!loading) return;
+    
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        setError('Loading is taking longer than expected. Please try refreshing the page.');
+      }
+    }, 30000); // 30 second timeout
+    
+    return () => clearTimeout(timeoutId);
+  }, [loading]);
 
   // Component to safely render the HTML content
   const HTMLRenderer = ({ content }: { content: string }) => {
@@ -280,6 +306,19 @@ export default function Page() {
                 whileTap={{ scale: 0.95 }}
               >
                 Load Previous Document
+              </motion.button>
+              <motion.button 
+                onClick={() => {
+                  // Attempt to reload the current page
+                  setError(null);
+                  setLoading(true);
+                  router.refresh();
+                }}
+                className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Retry
               </motion.button>
             </div>
           </div>
@@ -607,7 +646,7 @@ export default function Page() {
 
                   <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}>
                     <Link
-                      href="/load-previous"
+                      href="/page"
                       className="px-3 py-2 bg-[#0f172a]/70 hover:bg-[#1e293b] text-white rounded-md flex items-center"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">

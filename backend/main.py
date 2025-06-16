@@ -14,7 +14,7 @@ import uvicorn
 import uuid
 from dotenv import load_dotenv
 import logging
-from mangum import Mangum
+# from mangum import Mangum
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -393,9 +393,9 @@ async def get_page(token: str, page_number: int):
 
 @app.get("/")
 async def root():
-    return {"message": "ScrollForge API is running. Upload PDFs at /upload"}
+    return {"message": "ScrollForge API is running. Upload PDFs at /upload or view them at /page"}
 
-handler = Mangum(app)
+# handler = Mangum(app)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

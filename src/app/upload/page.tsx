@@ -27,9 +27,37 @@ export default function UploadPage() {
     // If there's already a PDF token in localStorage, redirect to the reader
     const existingToken = localStorage.getItem('pdf_access_token');
     if (existingToken) {
-      router.push('/page/1');
+      // Verify token is valid before redirecting
+      verifyToken(existingToken);
     }
   }, [router]);
+
+  // Function to verify token with the API
+  const verifyToken = async (token: string) => {
+    try {
+      const response = await fetch(`${API_URL}/api/pages/${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      if (response.ok) {
+        // Token is valid, redirect to the pages overview
+        router.push('/page');
+      } else {
+        // Token is invalid, clear localStorage
+        localStorage.removeItem('pdf_access_token');
+        localStorage.removeItem('pdf_total_pages');
+        localStorage.removeItem('pdf_name');
+      }
+    } catch (err) {
+      // Network error or other issues - do nothing
+      // User will stay on upload page
+      console.error('Error verifying token:', err);
+    }
+  };
 
   useEffect(() => {
     // Simulate upload progress
@@ -132,7 +160,7 @@ export default function UploadPage() {
   };
 
   const handleViewPages = () => {
-    router.push('/page/1');
+    router.push('/page');
   };
 
   const container = {
@@ -368,7 +396,7 @@ export default function UploadPage() {
                 ) : (
                   <span className="flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
                     Convert to Web Pages
                   </span>

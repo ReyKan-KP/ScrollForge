@@ -26,23 +26,44 @@ export default function LoadPrevious() {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/pages/${token}`);
+      const response = await fetch(`${API_URL}/api/pages/${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Add a reasonable timeout
+        signal: AbortSignal.timeout(10000)
+      });
 
       if (!response.ok) {
-        throw new Error('Document not found. Please check your access token and try again.');
+        if (response.status === 404) {
+          throw new Error('Document not found. Please check your access token and try again.');
+        } else if (response.status === 403) {
+          throw new Error('Access denied. This token may have expired.');
+        } else {
+          throw new Error('Failed to load document. Server returned an error.');
+        }
       }
 
       const data = await response.json();
       
       // Store document info in localStorage
-      localStorage.setItem('pdf_token', token);
+      localStorage.setItem('pdf_access_token', token);
       localStorage.setItem('pdf_total_pages', data.total_pages.toString());
+      if (data.pdf_name) {
+        localStorage.setItem('pdf_name', data.pdf_name);
+      }
 
-      // Redirect to the first page of the document
-      router.push(`/page/1`);
+      // Redirect to the pages overview
+      router.push(`/page`);
 
     } catch (err: any) {
-      setError(err.message || 'Failed to load document. Please try again.');
+      // Handle network errors specifically
+      if (err.name === 'AbortError') {
+        setError('Request timed out. Please check your connection and try again.');
+      } else {
+        setError(err.message || 'Failed to load document. Please try again.');
+      }
       setLoading(false);
     }
   };
