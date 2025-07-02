@@ -104,7 +104,7 @@ export default function Page() {
 
   if (!hasToken) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b] text-white p-4 md:p-8">
+      <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,25 +118,25 @@ export default function Page() {
               transition={{ delay: 0.2 }}
               className="inline-flex items-center mb-4"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-500 mr-3" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-primary mr-3" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
               </svg>
-              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">ScrollForge</h1>
+              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">ScrollForge</h1>
             </motion.div>
-            <h2 className="text-2xl font-bold text-white mb-2">No Active Document</h2>
-            <p className="text-gray-300">Please upload a new PDF document or load a previous one</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">No Active Document</h2>
+            <p className="text-muted-foreground">Please upload a new PDF document or load a previous one</p>
           </div>
           
           <motion.div 
-            className="bg-[#1e293b]/70 backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-[#334155] p-6"
+            className="bg-card backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-border p-6"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
             {error && (
-              <div className="mb-6 bg-red-900/30 border border-red-800 p-3 rounded-md">
-                <p className="text-red-300 text-sm flex items-start">
-                  <svg className="h-5 w-5 text-red-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <div className="mb-6 bg-destructive/20 border border-destructive/50 p-3 rounded-md">
+                <p className="text-destructive text-sm flex items-start">
+                  <svg className="h-5 w-5 text-destructive mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                   {error}
@@ -147,7 +147,7 @@ export default function Page() {
             <div className="flex flex-col space-y-4">
               <Link 
                 href="/upload"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 transform transition-transform hover:scale-[1.02] hover:shadow-blue-700/30"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-primary-foreground bg-primary hover:bg-primary/90 transform transition-transform hover:scale-[1.02] hover:shadow-primary/30"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -157,7 +157,7 @@ export default function Page() {
               
               <Link 
                 href="/load-previous"
-                className="w-full flex justify-center py-3 px-4 border border-[#334155] rounded-md shadow-lg text-white bg-[#1a3766] hover:bg-[#284d8a] transform transition-transform hover:scale-[1.02]"
+                className="w-full flex justify-center py-3 px-4 border border-border rounded-md shadow-lg text-foreground bg-card hover:bg-muted transform transition-transform hover:scale-[1.02]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -168,7 +168,7 @@ export default function Page() {
               
               <Link 
                 href="/"
-                className="w-full flex justify-center py-3 px-4 border border-[#334155] rounded-md text-gray-300 hover:text-white hover:bg-[#1e293b] transform transition-transform hover:scale-[1.02]"
+                className="w-full flex justify-center py-3 px-4 border border-border rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transform transition-transform hover:scale-[1.02]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
@@ -184,12 +184,12 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b] text-[#e0e0e0] flex justify-center items-center">
-        <div className="text-center p-8 bg-[#1e293b]/70 backdrop-blur-md border border-[#334155] rounded-xl shadow-2xl max-w-sm w-full">
+      <div className="min-h-screen bg-background text-foreground flex justify-center items-center">
+        <div className="text-center p-8 bg-card backdrop-blur-md border border-border rounded-xl shadow-2xl max-w-sm w-full">
           <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-blue-500/30 animate-pulse"></div>
+            <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-primary/30 animate-pulse"></div>
             <svg
-              className="animate-spin w-full h-full text-blue-500"
+              className="animate-spin w-full h-full text-primary"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -210,7 +210,7 @@ export default function Page() {
             </svg>
           </div>
           <p className="text-xl font-medium">Loading ScrollForge</p>
-          <p className="text-sm text-gray-400 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Preparing your digital reading experience
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b] text-[#e0e0e0] p-4 md:p-8">
+    <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -231,22 +231,22 @@ export default function Page() {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-[#1e293b]/70 backdrop-blur-md p-6 rounded-lg shadow-lg border border-[#334155]"
+            className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-card backdrop-blur-md p-6 rounded-lg shadow-lg border border-border"
           >
             <div className="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-blue-500 mr-3"
+                className="h-8 w-8 text-primary mr-3"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
               </svg>
               <div>
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                   ScrollForge
                 </h1>
-                <p className="text-gray-400 mt-1">
+                <p className="text-muted-foreground mt-1">
                   View and navigate your converted PDF documents
                 </p>
               </div>
@@ -255,11 +255,11 @@ export default function Page() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-md transition-colors text-sm flex items-center gap-2 shadow-lg shadow-blue-700/20"
+                className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md transition-colors text-sm flex items-center gap-2 shadow-lg"
               >
                 <Link
                   href="/load-previous"
-                  className="text-blue-400 hover:text-blue-300 transition-colors text-white"
+                  className="text-primary-foreground"
                 >
                   Load Previous
                 </Link>
@@ -268,7 +268,7 @@ export default function Page() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleClearToken}
-                className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white rounded-md transition-colors text-sm flex items-center gap-2 shadow-lg shadow-red-700/20"
+                className="px-4 py-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-md transition-colors text-sm flex items-center gap-2 shadow-lg"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -298,13 +298,13 @@ export default function Page() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="bg-[#1e293b]/70 backdrop-blur-md border border-[#334155] rounded-lg shadow-lg overflow-hidden mb-8 transform transition-transform hover:scale-[1.01] hover:shadow-blue-700/10"
+            className="bg-card backdrop-blur-md border border-border rounded-lg shadow-lg overflow-hidden mb-8 transform transition-transform hover:scale-[1.01] hover:shadow-primary/10"
           >
-            <div className="bg-gradient-to-r from-[#1e3a8a]/80 to-[#3b82f6]/80 px-6 py-5">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+            <div className="bg-primary/70 px-6 py-5">
+              <h2 className="text-xl font-semibold text-primary-foreground flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-red-400"
+                  className="h-5 w-5 text-primary-foreground/70"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -320,10 +320,10 @@ export default function Page() {
             <div className="p-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                  <p className="text-gray-300 mb-1">Document Information</p>
+                  <p className="text-muted-foreground mb-1">Document Information</p>
                   <p className="text-lg font-medium">
                     Total pages:{" "}
-                    <span className="text-blue-400">
+                    <span className="text-primary">
                       {documentInfo.total_pages}
                     </span>
                   </p>
@@ -334,7 +334,7 @@ export default function Page() {
                 >
                   <Link
                     href="/page/1"
-                    className="inline-flex items-center px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-md transition-all shadow-lg hover:shadow-blue-500/30"
+                    className="inline-flex items-center px-5 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md transition-all shadow-lg hover:shadow-primary/30"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -366,13 +366,13 @@ export default function Page() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
-            className="bg-[#1e293b]/70 backdrop-blur-md border border-[#334155] rounded-lg shadow-lg overflow-hidden"
+            className="bg-card backdrop-blur-md border border-border rounded-lg shadow-lg overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-[#1e3a8a]/80 to-[#3b82f6]/80 px-6 py-4">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+            <div className="bg-primary/70 px-6 py-4">
+              <h2 className="text-xl font-semibold text-primary-foreground flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-blue-400"
+                  className="h-5 w-5 text-primary-foreground/70"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -383,8 +383,8 @@ export default function Page() {
             </div>
 
             {documentInfo.total_pages > 20 && (
-              <div className="p-4 border-b border-[#334155]">
-                <p className="text-sm text-gray-400 mb-2">
+              <div className="p-4 border-b border-border">
+                <p className="text-sm text-muted-foreground mb-2">
                   Jump to page group:
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -396,7 +396,7 @@ export default function Page() {
                     >
                       <Link
                         href={`#group-${i}`}
-                        className="px-3 py-1 bg-[#0f172a] hover:bg-[#1e293b] border border-[#334155] rounded-md transition-colors text-sm shadow-md hover:shadow-blue-700/10"
+                        className="px-3 py-1 bg-muted hover:bg-muted/80 border border-border rounded-md transition-colors text-sm shadow-md hover:shadow-primary/10"
                       >
                         {group.start}-{group.end}
                       </Link>
@@ -410,7 +410,7 @@ export default function Page() {
               {pageGroups.map((group, i) => (
                 <div key={i} id={`group-${i}`} className="mb-8 last:mb-0">
                   {documentInfo.total_pages > 20 && (
-                    <h3 className="text-lg font-medium mb-3 text-gray-300">
+                    <h3 className="text-lg font-medium mb-3 text-muted-foreground">
                       Pages {group.start}-{group.end}
                     </h3>
                   )}
@@ -427,7 +427,7 @@ export default function Page() {
                           >
                             <Link
                               href={`/page/${pageNum}`}
-                              className="flex items-center justify-center h-12 bg-[#0f172a] hover:bg-[#1e293b] border border-[#334155] rounded-md transition-all hover:border-blue-500 shadow-md hover:shadow-blue-500/20"
+                              className="flex items-center justify-center h-12 bg-muted hover:bg-muted/80 border border-border rounded-md transition-all hover:border-primary shadow-md hover:shadow-primary/20"
                             >
                               <span>{pageNum}</span>
                             </Link>

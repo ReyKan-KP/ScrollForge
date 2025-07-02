@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Page() {
   const params = useParams();
@@ -116,6 +117,7 @@ export default function Page() {
             const data = await infoResponse.json();
             totalPagesNum = data.total_pages;
             setPdfName(data.pdf_name);
+            console.log("data", data);
             localStorage.setItem('pdf_total_pages', totalPagesNum.toString());
           } else {
             const errorData = await infoResponse.json();
@@ -197,14 +199,102 @@ export default function Page() {
     useEffect(() => {
       const container = document.getElementById('html-container');
       if (container) {
+        // Inject the HTML content
         container.innerHTML = content;
+        
+        // Apply theme-specific styles to the rendered HTML content
+        const applyThemeStyles = () => {
+          // Get all text elements in the rendered HTML
+          const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, li, a, td, th');
+          
+          // Apply theme-appropriate text color to all text elements
+          textElements.forEach(element => {
+            if (element instanceof HTMLElement) {
+              element.style.color = 'var(--foreground)';
+              
+              // For links, use primary color
+              if (element.tagName.toLowerCase() === 'a') {
+                element.style.color = 'var(--primary)';
+              }
+            }
+          });
+          
+          // Style tables if they exist
+          const tables = container.querySelectorAll('table');
+          tables.forEach(table => {
+            table.style.borderCollapse = 'collapse';
+            table.style.width = '100%';
+            
+            const cells = table.querySelectorAll('td, th');
+            cells.forEach(cell => {
+              if (cell instanceof HTMLElement) {
+                cell.style.border = '1px solid var(--border)';
+                cell.style.padding = '8px';
+              }
+            });
+          });
+          
+          // Style code blocks and pre elements
+          const codeBlocks = container.querySelectorAll('pre, code');
+          codeBlocks.forEach(block => {
+            if (block instanceof HTMLElement) {
+              block.style.backgroundColor = 'var(--muted)';
+              block.style.padding = '0.5rem';
+              block.style.borderRadius = '0.25rem';
+              block.style.fontFamily = 'var(--font-mono)';
+              block.style.fontSize = '0.9rem';
+            }
+          });
+          
+          // Style blockquotes
+          const blockquotes = container.querySelectorAll('blockquote');
+          blockquotes.forEach(quote => {
+            if (quote instanceof HTMLElement) {
+              quote.style.borderLeft = '4px solid var(--primary)';
+              quote.style.paddingLeft = '1rem';
+              quote.style.fontStyle = 'italic';
+              quote.style.margin = '1rem 0';
+            }
+          });
+          
+          // Style images to be responsive
+          const images = container.querySelectorAll('img');
+          images.forEach(img => {
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+          });
+          
+          // Apply background color to the container itself
+          container.style.backgroundColor = 'var(--background)';
+          container.style.color = 'var(--foreground)';
+        };
+        
+        // Apply styles immediately
+        applyThemeStyles();
+        
+        // Set up a mutation observer to detect theme changes
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'class' && 
+                mutation.target instanceof HTMLElement && 
+                mutation.target.tagName.toLowerCase() === 'body') {
+              applyThemeStyles();
+            }
+          });
+        });
+        
+        // Start observing the body for class changes (which happen when theme changes)
+        observer.observe(document.body, { attributes: true });
+        
+        // Clean up observer on component unmount
+        return () => observer.disconnect();
       }
     }, [content]);
     
     return (
       <div 
         id="html-container" 
-        className="p-6" 
+        className="p-6 prose prose-sm md:prose-base lg:prose-lg dark:prose-invert max-w-none" 
         style={{ 
           transform: `scale(${zoom / 100})`,
           transformOrigin: 'top center',
@@ -217,7 +307,7 @@ export default function Page() {
   // Show loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b]">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <motion.div 
           className="text-center"
           initial={{ opacity: 0 }}
@@ -226,12 +316,12 @@ export default function Page() {
         >
           <div className="relative w-20 h-20 mx-auto mb-6">
             <motion.div 
-              className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-blue-500/30"
+              className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-primary/30"
               animate={{ scale: [1, 1.2, 1] }} 
               transition={{ duration: 2, repeat: Infinity }}
             />
             <svg 
-              className="animate-spin h-full w-full text-blue-500" 
+              className="animate-spin h-full w-full text-primary" 
               xmlns="http://www.w3.org/2000/svg" 
               fill="none" 
               viewBox="0 0 24 24"
@@ -249,8 +339,8 @@ export default function Page() {
               ></path>
             </svg>
           </div>
-          <p className="text-lg font-medium text-white">Loading page {id}...</p>
-          <p className="text-sm text-gray-400 mt-2">Please wait while we prepare your content</p>
+          <p className="text-lg font-medium text-foreground">Loading page {id}...</p>
+          <p className="text-sm text-muted-foreground mt-2">Please wait while we prepare your content</p>
         </motion.div>
       </div>
     );
@@ -259,9 +349,9 @@ export default function Page() {
   // Show error state
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b]">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <motion.div 
-          className="max-w-md w-full bg-[#1e293b]/70 backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-[#334155] p-6"
+          className="max-w-md w-full bg-card backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-border p-6"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -269,7 +359,7 @@ export default function Page() {
           <div className="text-center">
             <div className="relative w-20 h-20 mx-auto mb-5">
               <svg 
-                className="h-full w-full text-red-500" 
+                className="h-full w-full text-destructive" 
                 xmlns="http://www.w3.org/2000/svg" 
                 fill="none" 
                 viewBox="0 0 24 24" 
@@ -283,17 +373,17 @@ export default function Page() {
                 />
               </svg>
               <motion.div 
-                className="absolute -inset-1 rounded-full border-2 border-red-500/20"
+                className="absolute -inset-1 rounded-full border-2 border-destructive/20"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
             </div>
-            <h2 className="text-2xl font-bold mb-3 text-white">Error</h2>
-            <p className="mb-5 text-gray-300">{error}</p>
+            <h2 className="text-2xl font-bold mb-3 text-foreground">Error</h2>
+            <p className="mb-5 text-muted-foreground">{error}</p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-center">
               <motion.button 
                 onClick={() => router.push('/')}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 shadow-lg shadow-blue-700/20"
+                className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -301,7 +391,7 @@ export default function Page() {
               </motion.button>
               <motion.button 
                 onClick={() => router.push('/load-previous')}
-                className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                className="px-4 py-2 bg-muted hover:bg-muted/90 text-muted-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-muted focus:ring-opacity-50"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -314,7 +404,7 @@ export default function Page() {
                   setLoading(true);
                   router.refresh();
                 }}
-                className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -376,12 +466,12 @@ export default function Page() {
 
   return (
     <div 
-      className={`min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b] transition-all duration-300 ${isFullscreen ? 'p-0' : 'py-6 px-2 sm:px-6'}`}
+      className={`min-h-screen bg-background transition-all duration-300 ${isFullscreen ? 'p-0' : 'py-6 px-2 sm:px-6'}`}
       onMouseMove={handleMouseMove}
     >
-      <div className={`mx-auto ${isFullscreen ? 'max-w-none' : 'max-w-6xl'}`}>
+      <div className={`mx-auto ${isFullscreen ? 'max-w-none' : 'max-w-7xl'}`}>
         <motion.div 
-          className={`bg-[#1e293b]/70 backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-[#334155] ${isFullscreen ? 'rounded-none border-0' : ''}`}
+          className={`bg-card backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-border ${isFullscreen ? 'rounded-none border-0' : ''}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -394,12 +484,12 @@ export default function Page() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
-                className={`border-b border-[#334155] bg-gradient-to-r from-[#1e3a8a]/80 to-[#3b82f6]/80 px-4 sm:px-6 py-3 flex flex-wrap gap-2 items-center justify-between ${isFullscreen ? 'absolute top-0 left-0 right-0 z-50' : ''}`}
+                className={`border-b border-border bg-primary/70 px-4 sm:px-6 py-3 flex flex-wrap gap-2 items-center justify-between ${isFullscreen ? 'absolute top-0 left-0 right-0 z-50' : ''}`}
               >
                 <div className="flex items-center space-x-2">
                   <Link 
                     href="/" 
-                    className="mr-2 text-gray-300 hover:text-white transition-colors"
+                    className="mr-2 text-primary-foreground hover:text-primary-foreground/90 transition-colors"
                     title="Back to Home"
                   >
                     <div className="flex items-center">
@@ -410,13 +500,13 @@ export default function Page() {
                     </div>
                   </Link>
                   
-                  <div className="h-4 w-px bg-gray-600 mx-2 hidden sm:block"></div>
+                  <div className="h-4 w-px bg-primary-foreground/30 mx-2 hidden sm:block"></div>
                   
-                  <h1 className="text-lg font-semibold text-white truncate max-w-[150px] sm:max-w-xs">
+                  <h1 className="text-lg font-semibold text-primary-foreground truncate max-w-[150px] sm:max-w-xs">
                     {pdfName || "PDF Document"}
                   </h1>
 
-                  <span className="text-sm px-2 py-1 bg-[#0f172a]/70 rounded text-blue-400 font-medium">
+                  <span className="text-sm px-2 py-1 bg-background/70 rounded text-primary font-medium">
                     Page {id} of {totalPages}
                   </span>
                 </div>
@@ -428,8 +518,8 @@ export default function Page() {
                       <Link 
                         href={id > 1 ? `/page/${id - 1}` : '#'}
                         className={`p-1.5 rounded-md ${id > 1 
-                          ? 'text-white ' 
-                          : 'text-gray-500  cursor-not-allowed'}`}
+                          ? 'text-primary-foreground' 
+                          : 'text-primary-foreground/30 cursor-not-allowed'}`}
                         title="Previous Page"
                         aria-disabled={id <= 1}
                         onClick={(e) => {
@@ -449,7 +539,7 @@ export default function Page() {
                         min="1" 
                         max={totalPages} 
                         defaultValue={id}
-                        className="w-12 h-8 text-center bg-[#0f172a]/70 border border-[#334155] rounded text-white text-sm" 
+                        className="w-12 h-8 text-center bg-background/70 border border-border rounded text-foreground text-sm" 
                       />
                     </form>
                     
@@ -457,8 +547,8 @@ export default function Page() {
                       <Link 
                         href={id < totalPages ? `/page/${id + 1}` : '#'}
                         className={`p-1.5 rounded-md ${id < totalPages 
-                          ? 'text-white ' 
-                          : 'text-gray-500 cursor-not-allowed'}`}
+                          ? 'text-primary-foreground' 
+                          : 'text-primary-foreground/30 cursor-not-allowed'}`}
                         title="Next Page"
                         aria-disabled={id >= totalPages}
                         onClick={(e) => {
@@ -473,11 +563,11 @@ export default function Page() {
                   </div>
 
                   {/* Zoom controls */}
-                  <div className="hidden sm:flex items-center space-x-1 border-l border-[#334155] pl-2">
+                  <div className="hidden sm:flex items-center space-x-1 border-l border-primary-foreground/30 pl-2">
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={handleZoomOut}
-                      className="p-1.5 text-white bg-[#1a3766] hover:bg-[#284d8a] rounded-md"
+                      className="p-1.5 text-primary-foreground bg-primary/80 hover:bg-primary rounded-md"
                       title="Zoom Out"
                       disabled={zoom <= 50}
                     >
@@ -488,7 +578,7 @@ export default function Page() {
                     
                     <button
                       onClick={handleZoomReset}
-                      className="text-xs text-white bg-[#0f172a]/70 px-1.5 py-1 rounded"
+                      className="text-xs text-primary bg-background/70 px-1.5 py-1 rounded"
                     >
                       {zoom}%
                     </button>
@@ -496,7 +586,7 @@ export default function Page() {
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={handleZoomIn}
-                      className="p-1.5 text-white bg-[#1a3766] hover:bg-[#284d8a] rounded-md"
+                      className="p-1.5 text-primary-foreground bg-primary/80 hover:bg-primary rounded-md"
                       title="Zoom In"
                       disabled={zoom >= 200}
                     >
@@ -506,17 +596,22 @@ export default function Page() {
                     </motion.button>
                   </div>
 
+                  {/* Theme Toggle */}
+                  <div className="border-l border-primary-foreground/30 pl-2">
+                    <ThemeToggle />
+                  </div>
+                  
                   {/* Fullscreen toggle */}
                   <motion.button 
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={toggleFullscreen}
-                    className="p-1.5 text-white bg-[#1a3766] hover:bg-[#284d8a] rounded-md ml-2"
+                    className="p-1.5 text-primary-foreground bg-primary/80 hover:bg-primary rounded-md ml-2"
                     title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                   >
                     {isFullscreen ? (
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M5 4a1 1 0 00-1 1v4a1 1 0 01-1 1H2a1 1 0 010-2h.93a.5.5 0 00.5-.5V5a1 1 0 011-1h4a1 1 0 010 2H6a.5.5 0 00-.5.5V8a1 1 0 01-1 1H3a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1v-1a1 1 0 112 0v1a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 00-1-1h-1a1 1 0 110-2h1a1 1 0 001-1V5a1 1 0 00-1-1h-4a1 1 0 00-1 1v1a1 1 0 11-2 0V5a1 1 0 00-1-1H5z" clipRule="evenodd" />
+                        <path fillRule="evenodd" d="M5 4a1 1 0 00-1 1v4a1 1 0 01-1 1H2a1 1 0 000 2h1a1 1 0 001 1v4a1 1 0 001 1h4a1 1 0 001-1v-1a1 1 0 112 0v1a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 011-1h1a1 1 0 100-2h-1a1 1 0 01-1-1V5a1 1 0 00-1-1h-4a1 1 0 00-1 1v1a1 1 0 11-2 0V5a1 1 0 00-1-1H5z" clipRule="evenodd" />
                       </svg>
                     ) : (
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -533,17 +628,17 @@ export default function Page() {
           <AnimatePresence>
             {(!isFullscreen || (isFullscreen && showControls)) && (
               <motion.div 
-                className="sm:hidden flex items-center justify-between px-4 py-2 bg-[#0f172a]/70 border-b border-[#334155]"
+                className="sm:hidden flex items-center justify-between px-4 py-2 bg-background/70 border-b border-border"
                 initial={isFullscreen ? { opacity: 0 } : { opacity: 1 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <span className="text-sm text-gray-400">Zoom:</span>
+                <span className="text-sm text-muted-foreground">Zoom:</span>
                 <div className="flex items-center space-x-2">
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={handleZoomOut}
-                    className="p-1.5 text-white bg-[#1a3766] hover:bg-[#284d8a] rounded-md"
+                    className="p-1.5 text-primary-foreground bg-primary/80 hover:bg-primary rounded-md"
                     disabled={zoom <= 50}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -553,7 +648,7 @@ export default function Page() {
                   
                   <button
                     onClick={handleZoomReset}
-                    className="text-xs text-white bg-[#0f172a] px-1.5 py-1 rounded"
+                    className="text-xs text-foreground bg-muted px-1.5 py-1 rounded"
                   >
                     {zoom}%
                   </button>
@@ -561,7 +656,7 @@ export default function Page() {
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={handleZoomIn}
-                    className="p-1.5 text-white bg-[#1a3766] hover:bg-[#284d8a] rounded-md"
+                    className="p-1.5 text-primary-foreground bg-primary/80 hover:bg-primary rounded-md"
                     disabled={zoom >= 200}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -578,7 +673,7 @@ export default function Page() {
             ref={contentRef}
             className={`w-full min-h-[50vh] overflow-auto ${isFullscreen ? 'max-h-screen' : 'max-h-[calc(100vh-240px)]'} `}
           >
-            <div className="overflow-auto">
+            <div className="overflow-auto bg-background text-foreground">
               {htmlContent && <HTMLRenderer content={htmlContent} />}
             </div>
           </div>
@@ -587,7 +682,7 @@ export default function Page() {
           <AnimatePresence>
             {(!isFullscreen || (isFullscreen && showControls)) && (
               <motion.div 
-                className={`px-4 sm:px-6 py-4 bg-[#1e293b]/90 backdrop-blur-md border-t border-[#334155] ${isFullscreen ? 'absolute bottom-0 left-0 right-0 z-50' : ''}`}
+                className={`px-4 sm:px-6 py-4 bg-card backdrop-blur-md border-t border-border ${isFullscreen ? 'absolute bottom-0 left-0 right-0 z-50' : ''}`}
                 initial={isFullscreen ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
@@ -598,7 +693,7 @@ export default function Page() {
                     {pagination.map((page, index) => {
                       if (page === '...') {
                         return (
-                          <span key={`ellipsis-${index}`} className="px-2 py-1 text-gray-400">
+                          <span key={`ellipsis-${index}`} className="px-2 py-1 text-muted-foreground">
                             ...
                           </span>
                         );
@@ -612,8 +707,8 @@ export default function Page() {
                             href={`/page/${pageNum}`} 
                             className={`px-3 py-1.5 rounded text-center min-w-[32px] text-sm ${
                               pageNum === id 
-                                ? 'bg-blue-700 text-white font-medium shadow-lg shadow-blue-700/20' 
-                                : 'bg-[#1a3766] text-white hover:bg-[#284d8a]'
+                                ? 'bg-primary text-primary-foreground font-medium shadow-lg' 
+                                : 'bg-primary/40 text-primary-foreground hover:bg-primary/60'
                             }`}
                           >
                             {pageNum}
@@ -630,8 +725,8 @@ export default function Page() {
                     <Link 
                       href={id > 1 ? `/page/${id - 1}` : '#'}
                       className={`flex items-center px-3 py-2 rounded-md ${id > 1 
-                        ? 'bg-[#1a3766] hover:bg-[#284d8a] text-white' 
-                        : 'bg-[#0f172a]/70 text-gray-500 cursor-not-allowed'}`}
+                        ? 'bg-primary/50 hover:bg-primary/60 text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
                       aria-disabled={id <= 1}
                       onClick={(e) => {
                         if (id <= 1) e.preventDefault();
@@ -647,7 +742,7 @@ export default function Page() {
                   <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/page"
-                      className="px-3 py-2 bg-[#0f172a]/70 hover:bg-[#1e293b] text-white rounded-md flex items-center"
+                      className="px-3 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-md flex items-center"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -660,8 +755,8 @@ export default function Page() {
                     <Link 
                       href={id < totalPages ? `/page/${id + 1}` : '#'}
                       className={`flex items-center px-3 py-2 rounded-md ${id < totalPages 
-                        ? 'bg-[#1a3766] hover:bg-[#284d8a] text-white' 
-                        : 'bg-[#0f172a]/70 text-gray-500 cursor-not-allowed'}`}
+                        ? 'bg-primary/50 hover:bg-primary/60 text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
                       aria-disabled={id >= totalPages}
                       onClick={(e) => {
                         if (id >= totalPages) e.preventDefault();
@@ -675,7 +770,7 @@ export default function Page() {
                   </motion.div>
                 </div>
                 
-                <div className="text-center text-xs text-gray-400 mt-4">
+                <div className="text-center text-xs text-muted-foreground mt-4">
                   <p>Keyboard shortcuts: Arrow keys to navigate pages, F to toggle fullscreen</p>
                 </div>
               </motion.div>

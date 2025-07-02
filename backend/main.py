@@ -1,4 +1,4 @@
-import fitz
+import pymupdf
 import os
 import re
 import math
@@ -90,180 +90,109 @@ async def get_token(x_access_token: Optional[str] = Header(None)):
 async def convert_pdf_to_html(pdf: UploadFile = File(...)):
     doc = None
     temp_path = None
-    
+
     try:
-        # Check if the file is a PDF
         if not pdf.filename.endswith('.pdf'):
             raise HTTPException(status_code=400, detail="File must be a PDF")
-        
-        # Read the PDF file
+
         content = await pdf.read()
-        
-        # Create a temporary file to save the uploaded PDF
         temp_path = f"temp_{pdf.filename}"
         with open(temp_path, "wb") as temp_file:
             temp_file.write(content)
-            
-        # Process the PDF
-        doc = fitz.open(temp_path)
-        
-        # Extract all paragraphs from all pages
+
+        doc = pymupdf.open(temp_path)
         all_paragraphs = []
         pdf_page_count = len(doc)
-        
+
         for page_number in range(pdf_page_count):
             page = doc[page_number]
             blocks = page.get_text("blocks")
-            
             for block in blocks:
                 paragraph_text = block[4]
-                
-                # Skip empty paragraphs or those with just whitespace/special characters
                 if not paragraph_text.strip() or len(re.sub(r'\W+', '', paragraph_text)) < 10:
                     continue
-                    
-                all_paragraphs.append({
-                    'text': paragraph_text,
-                })
-        
-        # Group paragraphs into batches of 80
+                all_paragraphs.append({'text': paragraph_text})
+
         paragraphs_per_page = 80
         total_html_pages = math.ceil(len(all_paragraphs) / paragraphs_per_page)
-        
-        # Generate a unique access token for the document
         access_token = generate_token()
-        
-        # Create HTML pages and store each in Supabase Storage
         page_urls = []
+
         for html_page in range(total_html_pages):
             start_idx = html_page * paragraphs_per_page
             end_idx = min((html_page + 1) * paragraphs_per_page, len(all_paragraphs))
             page_paragraphs = all_paragraphs[start_idx:end_idx]
-            
-            # Create HTML content with multiple paragraphs
+
             html_content = f"""<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pdf.filename} - Page {html_page + 1}</title>
+    <meta name="description" content="Machine-readable content extracted from PDF." />
     <style>
         body {{
+            font-family: Georgia, serif;
+            background-color: #f9f9f9;
+            color: #111;
+            padding: 0;
             margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-        }}
-        .content-container {{
-            padding: 0;
-        }}
-        .content-card {{
-            background-color: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }}
-        .card-header {{
-            padding: 0;
-            border-bottom: 1px solid #0f3460;
-            background-color: #0f3460;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }}
-        .card-title {{
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: white;
-            margin: 0;
-        }}
-        .card-body {{
-            padding: 1.5rem;
-        }}
-        .paragraph {{
-            margin-bottom: 1.5rem;
             line-height: 1.6;
         }}
-        .paragraph p {{
-            margin: 0;
+        article {{
+            display: block;
         }}
-        a {{
-            color: #4dabf7;
-            text-decoration: none;
-        }}
-        a:hover {{
-            text-decoration: underline;
+        p {{
+            margin-bottom: 1rem;
         }}
     </style>
 </head>
 <body>
-    <div class="content-container">
-        <div class="content-card">
-            <div class="card-body">"""
-            
-            # Add each paragraph to the HTML
-            for i, para in enumerate(page_paragraphs):
-                html_content += f"""
-                <div class="paragraph">
-                    <p>{para['text']}</p>
-                </div>"""
-            
+    <main>
+        <article>
+"""
+            for para in page_paragraphs:
+                html_content += f"<p>{para['text'].strip()}</p>\n"
+
             html_content += """
-            </div>
-        </div>
-    </div>
+        </article>
+    </main>
 </body>
 </html>"""
-            
-            # Create the file path in storage
+
             file_path = f"{access_token}/page_{html_page + 1}.html"
-            
-            # Convert HTML string to bytes
             html_bytes = html_content.encode('utf-8')
-            
-            # Upload the HTML file to Supabase Storage
             upload_response = supabase.storage.from_(STORAGE_BUCKET).upload(
                 file_path,
                 html_bytes,
                 {"content-type": "text/html; charset=utf-8"}
             )
-            
             if hasattr(upload_response, 'error') and upload_response.error:
                 raise Exception(f"Failed to upload HTML file: {upload_response.error}")
-                
-            # Get public URL for the file
+
             url_response = supabase.storage.from_(STORAGE_BUCKET).get_public_url(file_path)
             page_url = url_response.data if hasattr(url_response, 'data') else url_response
-            
             page_urls.append(page_url)
-        
-        # Close the document
+
         doc.close()
         doc = None
-        
-        # Remove temporary file
         if temp_path and os.path.exists(temp_path):
             os.remove(temp_path)
             temp_path = None
-        
-        # Store only metadata in the database
+
         data = {
             "pdf_name": pdf.filename,
             "page_count": pdf_page_count,
             "access_token": access_token,
             "total_pages": total_html_pages,
-            "paragraphs": None  # Not storing HTML content in DB anymore
+            "paragraphs": None
         }
-        
-        # Insert into Supabase using admin client if available (to bypass RLS)
+
         client_to_use = admin_supabase if admin_supabase else supabase
         response = client_to_use.table("pdf_documents").insert(data).execute()
-        
-        # Check if the insert was successful
         if hasattr(response, 'error') and response.error is not None:
             raise Exception(f"Supabase error: {response.error}")
-            
+
         logger.info(f"Successfully processed PDF: {pdf.filename}, token: {access_token}")
         return JSONResponse({
             "success": True,
@@ -271,23 +200,15 @@ async def convert_pdf_to_html(pdf: UploadFile = File(...)):
             "token": access_token,
             "total_pages": total_html_pages
         })
-            
+
     except Exception as e:
         logger.error(f"Error processing PDF: {str(e)}")
-        
-        # Clean up resources in case of error
         if doc is not None:
-            try:
-                doc.close()
-            except:
-                pass
-                
+            try: doc.close()
+            except: pass
         if temp_path and os.path.exists(temp_path):
-            try:
-                os.remove(temp_path)
-            except:
-                pass
-                
+            try: os.remove(temp_path)
+            except: pass
         return JSONResponse(
             status_code=500,
             content={"error": f"Failed to process PDF: {str(e)}"}

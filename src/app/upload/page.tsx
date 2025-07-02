@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -21,6 +22,8 @@ export default function UploadPage() {
   
   // API URL - change this to match your backend (FastAPI)
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+  // const themeClass = localStorage.getItem('theme') || 'default-theme';
 
   // Check for existing token on mount
   useEffect(() => {
@@ -179,37 +182,27 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#131f33] to-[#1e293b] text-[#e0e0e0] p-4 md:p-8 flex items-center justify-center">
+    <div className={`min-h-screen bg-background text-foreground flex justify-center items-center`}>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="max-w-2xl w-full"
       >
-        <div className="bg-[#1e293b]/70 backdrop-blur-md border border-[#334155] rounded-lg shadow-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-[#1e3a8a]/80 to-[#3b82f6]/80 px-6 py-5 flex items-center justify-between">
+        <div className="bg-card backdrop-blur-md border border-border rounded-lg shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-5 flex items-center justify-between">
             <div className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-500 mr-3" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary/90 mr-3" viewBox="0 0 24 24" fill="#F8FAFC">
                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
               </svg>
               <div>
-                <h1 className="text-2xl font-bold text-white">ScrollForge</h1>
-                <p className="text-sm text-gray-300 mt-1">Upload and convert your PDF documents</p>
+                <h1 className="text-2xl font-bold text-primary-foreground">ScrollForge</h1>
+                <p className="text-sm text-muted mt-1">Upload and convert your PDF documents</p>
               </div>
             </div>
-
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link 
-                href="/load-previous" 
-                className="flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm bg-[#0f172a]/50 px-4 py-2 rounded-md border border-[#334155]"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                  <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                </svg>
-                Load Previous
-              </Link>
-            </motion.div>
+            <div>
+              <ThemeToggle />
+            </div>
           </div>
           
           <div className="p-6">
@@ -222,7 +215,7 @@ export default function UploadPage() {
                   htmlFor="pdf-upload" 
                   className="block mb-3 text-lg font-medium flex items-center"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-primary" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
                   </svg>
                   Upload PDF Document
@@ -235,7 +228,7 @@ export default function UploadPage() {
                 >
                   <label 
                     htmlFor="pdf-upload" 
-                    className={`flex flex-col items-center justify-center w-full h-64 border-2 ${isDragging ? 'border-blue-500 shadow-lg shadow-blue-500/20' : 'border-[#334155]'} border-dashed rounded-lg cursor-pointer bg-[#0f172a] hover:bg-[#162032] transition-all duration-300 relative overflow-hidden`}
+                    className={`flex flex-col items-center justify-center w-full h-64 border-2 ${isDragging ? 'border-primary shadow-lg shadow-primary/20' : 'border-border'} border-dashed rounded-lg cursor-pointer bg-background hover:bg-background/80 transition-all duration-300 relative overflow-hidden`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -247,9 +240,9 @@ export default function UploadPage() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="absolute inset-0 bg-blue-500/10 border-4 border-blue-500 rounded-lg z-10 flex items-center justify-center"
+                          className="absolute inset-0 bg-primary/10 border-4 border-primary rounded-lg z-10 flex items-center justify-center"
                         >
-                          <p className="text-xl font-bold text-blue-400 animate-pulse">Drop PDF Here</p>
+                          <p className="text-xl font-bold text-primary animate-pulse">Drop PDF Here</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -262,7 +255,7 @@ export default function UploadPage() {
                           className="text-center"
                         >
                           <svg 
-                            className="w-16 h-16 mb-3 text-green-400" 
+                            className="w-16 h-16 mb-3 text-primary" 
                             fill="none" 
                             stroke="currentColor" 
                             viewBox="0 0 24 24" 
@@ -275,17 +268,17 @@ export default function UploadPage() {
                               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
                             />
                           </svg>
-                          <p className="mt-2 text-xl text-green-400 font-bold">
+                          <p className="mt-2 text-xl text-primary font-bold">
                             PDF Selected
                           </p>
-                          <p className="mt-1 text-[#4dabf7] font-medium">
+                          <p className="mt-1 text-primary font-medium">
                             {file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)
                           </p>
                           <motion.button 
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             type="button" 
-                            className="mt-3 text-red-400 hover:text-red-300 text-sm flex items-center mx-auto"
+                            className="mt-3 text-destructive hover:text-destructive/80 text-sm flex items-center mx-auto"
                             onClick={() => setFile(null)}
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -297,7 +290,7 @@ export default function UploadPage() {
                       ) : (
                         <>
                           <svg 
-                            className="w-12 h-12 mb-3 text-[#4dabf7]" 
+                            className="w-12 h-12 mb-3 text-primary" 
                             fill="none" 
                             stroke="currentColor" 
                             viewBox="0 0 24 24" 
@@ -313,7 +306,7 @@ export default function UploadPage() {
                           <p className="mb-2 text-lg text-center">
                             <span className="font-semibold">Click to upload</span> or drag and drop
                           </p>
-                          <p className="text-sm text-gray-400">
+                          <p className="text-sm text-muted-foreground">
                             PDF files only
                           </p>
                         </>
@@ -336,9 +329,9 @@ export default function UploadPage() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="mb-5 p-4 bg-red-900/30 border border-red-800 rounded-lg text-red-300 flex items-start"
+                    className="mb-5 p-4 bg-destructive/20 border border-destructive/50 rounded-lg text-destructive flex items-start"
                   >
-                    <svg className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-5 w-5 text-destructive mr-2 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                     {error}
@@ -349,10 +342,10 @@ export default function UploadPage() {
               <motion.button 
                 type="submit" 
                 disabled={!file || isUploading}
-                className={`w-full px-5 py-3 rounded-md font-medium text-white transition-all ${
+                className={`w-full px-5 py-3 rounded-md font-medium text-primary-foreground transition-all ${
                   !file || isUploading 
-                    ? 'bg-blue-700/50 cursor-not-allowed' 
-                    : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 active:from-blue-700 active:to-blue-800 hover:shadow-lg hover:shadow-blue-700/20'
+                    ? 'bg-primary/50 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-primary to-primary/80 hover:from-primary/70 hover:to-primary/90 active:from-primary active:to-primary/90 hover:shadow-lg hover:shadow-primary/20'
                 }`}
                 whileHover={file && !isUploading ? { scale: 1.01 } : {}}
                 whileTap={file && !isUploading ? { scale: 0.98 } : {}}
@@ -364,7 +357,7 @@ export default function UploadPage() {
                   <div className="flex flex-col items-center justify-center">
                     <div className="flex items-center justify-center mb-1">
                       <svg 
-                        className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" 
+                        className="animate-spin -ml-1 mr-2 h-5 w-5 text-primary-foreground" 
                         xmlns="http://www.w3.org/2000/svg" 
                         fill="none" 
                         viewBox="0 0 24 24"
@@ -383,9 +376,9 @@ export default function UploadPage() {
                       </svg>
                       Processing PDF...
                     </div>
-                    <div className="w-full bg-[#0f172a] rounded-full h-2.5 mt-1">
+                    <div className="w-full bg-background rounded-full h-2.5 mt-1">
                       <motion.div 
-                        className="bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 h-2.5 rounded-full" 
+                        className="bg-gradient-to-r from-primary via-primary/80 to-primary h-2.5 rounded-full" 
                         style={{ width: `${Math.floor(uploadProgress)}%` }}
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.floor(uploadProgress)}%` }}
@@ -407,14 +400,14 @@ export default function UploadPage() {
             <AnimatePresence>
               {uploadResult && (
                 <motion.div 
-                  className="mt-8 p-5 bg-[#0f172a]/70 border border-[#334155] rounded-lg"
+                  className="mt-8 p-5 bg-background/70 border border-border rounded-lg"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ type: "spring", damping: 12, stiffness: 80 }}
                 >
                   <div className="flex items-center mb-4">
                     <div className="relative mr-3">
-                      <svg className="h-8 w-8 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <svg className="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       <motion.div
@@ -427,29 +420,29 @@ export default function UploadPage() {
                           repeat: Infinity,
                           repeatType: "reverse"
                         }}
-                        className="absolute -inset-1 rounded-full bg-green-400/20"
+                        className="absolute -inset-1 rounded-full bg-primary/20"
                       ></motion.div>
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-white">Processing Complete</h3>
-                      <p className="text-gray-300 text-sm">{uploadResult.message}</p>
+                      <h3 className="text-xl font-semibold text-primary/90">Processing Complete</h3>
+                      <p className="text-muted-foreground text-sm">{uploadResult.message}</p>
                     </div>
                   </div>
                   
                   <motion.div 
-                    className="mt-5 p-4 bg-[#0f172a] border border-[#334155] rounded-lg"
+                    className="mt-5 p-4 bg-background border border-border rounded-lg"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
                     <p className="mb-2 font-medium flex items-center">
-                      <svg className="h-4 w-4 text-yellow-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <svg className="h-4 w-4 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1 .243-.243A6 6 0 1118 8zm-6-4a1 1 0 100 2h2a1 1 0 100-2h-2z" clipRule="evenodd" />
                       </svg>
                       Your Access Token:
                     </p>
                     <div className="relative">
-                      <code className="block p-3 bg-[#131f33] text-[#e0e0e0] rounded overflow-x-auto text-sm whitespace-nowrap font-mono border border-[#334155]">
+                      <code className="block p-3 bg-background text-primary/90 rounded overflow-x-auto text-sm whitespace-nowrap font-mono border border-border">
                         {uploadResult.token}
                       </code>
                       <motion.button
@@ -459,7 +452,7 @@ export default function UploadPage() {
                           navigator.clipboard.writeText(uploadResult.token || '');
                           alert('Token copied to clipboard!');
                         }}
-                        className="absolute right-2 top-2 text-blue-400 hover:text-blue-300 bg-[#1a1a2e]/70 p-1.5 rounded-full"
+                        className="absolute right-2 top-2 text-primary hover:text-primary/80 bg-background p-1.5 rounded-full"
                         title="Copy to clipboard"
                       >
                         <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -468,7 +461,7 @@ export default function UploadPage() {
                         </svg>
                       </motion.button>
                     </div>
-                    <p className="mt-3 text-sm text-gray-400">
+                    <p className="mt-3 text-sm text-muted-foreground">
                       Keep this token to access your document later. It has been saved in your browser.
                     </p>
                   </motion.div>
@@ -482,7 +475,7 @@ export default function UploadPage() {
                     <motion.div variants={item}>
                       <motion.button 
                         onClick={handleViewPages}
-                        className="w-full px-5 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white font-medium rounded-md transition-all flex items-center justify-center shadow-lg hover:shadow-green-600/20"
+                        className="w-full px-5 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/70 hover:to-primary/90 text-primary-foreground font-medium rounded-md transition-all flex items-center justify-center shadow-lg hover:shadow-primary/20"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -500,7 +493,7 @@ export default function UploadPage() {
                           setFile(null);
                           setUploadResult(null);
                         }}
-                        className="w-full px-5 py-3 bg-[#1e293b] hover:bg-[#263a52] transition-all text-white rounded-md flex items-center justify-center shadow-md"
+                        className="w-full px-5 py-3 bg-background/20 hover:bg-background/80 transition-all text-primary/90 rounded-md flex items-center justify-center shadow-md"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -518,7 +511,7 @@ export default function UploadPage() {
         </div>
         
         <motion.div 
-          className="text-center mt-5 text-sm text-gray-400"
+          className="text-center mt-5 text-sm text-muted-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
