@@ -19,7 +19,7 @@ export default function Home() {
   // API URL - change this to match your backend (FastAPI)
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-  const themeClass = localStorage.getItem('theme') || 'default-theme';
+  // const themeClass = localStorage.getItem('theme') || 'default-theme';
 
   useEffect(() => {
     const checkToken = async () => {
@@ -112,7 +112,7 @@ export default function Home() {
   // Loading State
   if (loading) {
     return (
-      <div className={`min-h-screen bg-background text-foreground flex justify-center items-center ${themeClass}`}>
+      <div className={`min-h-screen bg-background text-foreground flex justify-center items-center`}>
         <div className="text-center p-8 bg-card backdrop-blur-md border border-border rounded-xl shadow-2xl max-w-sm w-full">
           <div className="relative w-20 h-20 mx-auto mb-6">
             <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-primary/30 animate-pulse"></div>
@@ -145,7 +145,7 @@ export default function Home() {
   // Error State
   if (error) {
     return (
-      <div className={`min-h-screen bg-background text-foreground flex justify-center items-center p-4 ${themeClass}`}>
+      <div className={`min-h-screen bg-background text-foreground flex justify-center items-center p-4`}>
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -199,7 +199,7 @@ export default function Home() {
   // Landing Page (No Token)
   if (!hasToken) {
     return (
-      <div className={`min-h-screen bg-background text-foreground p-4 md:p-8 ${themeClass}`}>
+      <div className={`min-h-screen bg-background text-foreground p-4 md:p-8`}>
         <div className="absolute top-4 right-4">
           <ThemeToggle />
         </div>
@@ -374,7 +374,7 @@ export default function Home() {
 
   // Document Info Page (When Token Exists)
   return (
-    <div className={`min-h-screen bg-background text-foreground p-4 md:p-8 ${themeClass}`}>
+    <div className={`min-h-screen bg-background text-foreground p-4 md:p-8`}>
         <div className="absolute top-4 right-4">
           <ThemeToggle />
         </div>
