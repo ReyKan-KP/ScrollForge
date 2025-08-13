@@ -1,7 +1,7 @@
-# 📚 ScrollForge PDF Reader
+
 
 <div align="center">
-
+<h1> 📚 ScrollForge -A slick PDF to Website converter</h1>
 <!-- ![ScrollForge Logo](https://via.placeholder.com/200x200?text=ScrollForge) -->
 
 [![Next.js](https://img.shields.io/badge/Next.js-13.x-black?style=flat-square&logo=next.js)](https://nextjs.org/)
@@ -27,7 +27,6 @@
   - [Backend Setup](#backend-setup) 
 - [📖 Usage Guide](#-usage-guide)
 - [🔌 API Documentation](#-api-documentation)
-- [🛠️ Technology Stack](#-technology-stack)
 - [🔄 Contributing](#-contributing)
 - [📜 License](#-license)
 - [🙏 Acknowledgements](#-acknowledgements)
