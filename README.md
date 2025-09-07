@@ -33,7 +33,6 @@
   - [Backend Setup](#backend-setup) 
 - [📖 Usage Guide](#-usage-guide)
 - [🔌 API Documentation](#-api-documentation)
-- [🛠️ Technology Stack](#-technology-stack)
 - [🔄 Contributing](#-contributing)
 - [📜 License](#-license)
 - [🙏 Acknowledgements](#-acknowledgements)
