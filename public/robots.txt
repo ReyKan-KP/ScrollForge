@@ -1,0 +1,91 @@
+# ScrollForge Robots.txt
+# https://scroll-forge.vercel.app
+# Last Updated: 2024
+
+# Default - Allow all legitimate crawlers
+User-agent: *
+Allow: /
+Allow: /upload
+Allow: /load-previous
+Allow: /features
+Allow: /about
+Allow: /blog
+Allow: /docs
+Allow: /tutorials
+Allow: /use-cases
+Allow: /compare
+Allow: /faq
+Allow: /contact
+Allow: /sitemap.xml
+Allow: /sitemap-*.xml
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.webp$
+Allow: /*.woff$
+Allow: /*.woff2$
+Disallow: /api/
+Disallow: /_next/
+Disallow: /page/*/
+Disallow: /*.json$
+Disallow: /admin
+Disallow: /private
+Disallow: /temp
+Disallow: /cache
+Crawl-delay: 0
+
+# Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# Allow image crawlers
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: bingbot/2.0
+Allow: /
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://scroll-forge.vercel.app/sitemap.xml
+Sitemap: https://scroll-forge.vercel.app/sitemap-index.xml
+
+# Host
+Host: https://scroll-forge.vercel.app

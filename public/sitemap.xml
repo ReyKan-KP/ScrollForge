@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <!-- Homepage - Highest Priority -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://scroll-forge.vercel.app/og-image.png</image:loc>
+      <image:title>ScrollForge - PDF to Website Converter</image:title>
+      <image:caption>Convert PDF files to interactive websites instantly with ScrollForge</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Upload Page - High Priority -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/upload</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://scroll-forge.vercel.app/upload-screenshot.png</image:loc>
+      <image:title>Upload PDF to Convert</image:title>
+      <image:caption>Easy PDF upload interface for instant conversion to HTML</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Load Previous Documents Page -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/load-previous</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Features Page (if exists) -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/features</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/about</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Help/FAQ Page -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/faq</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/privacy</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/terms</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://scroll-forge.vercel.app/contact</loc>
+    <lastmod>2024-01-01T00:00:00Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

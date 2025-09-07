@@ -1,18 +1,24 @@
-# 📚 ScrollForge PDF Reader
+# 📜 ScrollForge - Open Source PDF to Website Converter
 
 <div align="center">
-
-<!-- ![ScrollForge Logo](https://via.placeholder.com/200x200?text=ScrollForge) -->
-
-[![Next.js](https://img.shields.io/badge/Next.js-13.x-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.95.0-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-
-### Transform PDF documents into interactive web pages with a modern, accessible interface
-
-[View Demo](https://scrollforge-demo.vercel.app) | [Report Bug](https://github.com/yourusername/scrollforge/issues) | [Request Feature](https://github.com/yourusername/scrollforge/issues)
+  
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-ScrollForge-blue?style=for-the-badge&logo=vercel)](https://scroll-forge.vercel.app/)
+  [![GitHub Stars](https://img.shields.io/github/stars/ReyKan-KP/ScrollForge?style=for-the-badge&logo=github)](https://github.com/ReyKan-KP/ScrollForge)
+  [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+  [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red?style=for-the-badge)](https://github.com/ReyKan-KP/ScrollForge)
+  
+  <h3>Transform PDFs into Interactive Web Pages ✨</h3>
+  
+  <p>
+    <strong>Created by <a href="https://github.com/ReyKan-KP">ReyKan-KP (Kanishaka Pranjal)</a></strong>
+  </p>
+  
+  <p>
+    ⭐ <strong>If you find this project useful, please star the repository!</strong> ⭐<br>
+    👤 <strong>Follow <a href="https://github.com/ReyKan-KP">@ReyKan-KP</a> for more awesome projects!</strong>
+  </p>
+  
+  ### 🌐 [Live Demo](https://scroll-forge.vercel.app/) | 📂 [GitHub Repository](https://github.com/ReyKan-KP/ScrollForge) | 👨‍💻 [Creator Profile](https://github.com/ReyKan-KP)
 
 </div>
 
@@ -33,6 +39,17 @@
 - [🙏 Acknowledgements](#-acknowledgements)
 
 ---
+
+## 🚀 About This Open Source Project
+
+**ScrollForge** is a powerful, **100% free and open-source** PDF to website converter that transforms your PDF documents into interactive, responsive HTML web pages instantly. Built with modern web technologies by **[ReyKan-KP (Kanishaka Pranjal)](https://github.com/ReyKan-KP)**, it provides a seamless experience for viewing and sharing PDF content online.
+
+### Why ScrollForge?
+- ✅ **Completely Free** - No hidden costs, no premium tiers
+- ✅ **Open Source** - Contribute, modify, and learn from the code
+- ✅ **No Watermarks** - Clean output every time
+- ✅ **Privacy First** - Your documents stay secure with unique tokens
+- ✅ **Modern Tech Stack** - Built with Next.js 15, TypeScript, and FastAPI
 
 ## ✨ Features
 
@@ -78,7 +95,7 @@
 1. Clone the repository:
 ```bash
 git clone https://github.com/ReyKan-KP/ScrollForge.git
-cd scrollforge
+cd ScrollForge
 ```
 
 2. Install frontend dependencies:
@@ -312,15 +329,29 @@ async def get_page_html(token: str, page_number: int):
 
 ---
 
-## 🔄 Contributing
+## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+**We love contributions!** This is an open-source project created by **[ReyKan-KP](https://github.com/ReyKan-KP)** and we welcome all kinds of contributions.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### How to Contribute
+
+1. ⭐ **Star the repository** - Show your support for the project!
+2. 👤 **Follow [@ReyKan-KP](https://github.com/ReyKan-KP)** - Stay updated with new features
+3. 🍴 **Fork the repository**
+4. 🔧 **Create a feature branch** (`git checkout -b feature/AmazingFeature`)
+5. 💻 **Make your changes**
+6. 📝 **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
+7. 📤 **Push to the branch** (`git push origin feature/AmazingFeature`)
+8. 🎉 **Open a Pull Request**
+
+### Areas for Contribution
+- 🐛 Bug fixes
+- ✨ New features
+- 📚 Documentation improvements
+- 🎨 UI/UX enhancements
+- 🌍 Internationalization
+- ⚡ Performance improvements
+- 🧪 Test coverage
 
 ---
 
@@ -332,9 +363,34 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🙏 Acknowledgements
 
+- **Created with ❤️ by [ReyKan-KP (Kanishaka Pranjal)](https://github.com/ReyKan-KP)**
 - [Next.js](https://nextjs.org/) - The React framework
 - [Tailwind CSS](https://tailwindcss.com/) - For styling
 - [Framer Motion](https://www.framer.com/motion/) - For animations
 - [FastAPI](https://fastapi.tiangolo.com/) - For backend API
 - [PyMuPDF](https://pymupdf.readthedocs.io/) - For PDF processing
-- [Font Awesome](https://fontawesome.com/) - For icons
+- Thanks to all contributors who help make ScrollForge better!
+
+---
+
+## ⭐ Support the Project
+
+If you find ScrollForge useful, please consider:
+
+1. **⭐ Starring the repository** on [GitHub](https://github.com/ReyKan-KP/ScrollForge)
+2. **👥 Following [@ReyKan-KP](https://github.com/ReyKan-KP)** for updates
+3. **🐛 Reporting bugs** or suggesting features
+4. **📢 Sharing the project** with others
+5. **🤝 Contributing** to the codebase
+
+Your support helps keep this project alive and growing!
+
+---
+
+<div align="center">
+  
+  **[⭐ Star on GitHub](https://github.com/ReyKan-KP/ScrollForge)** | **[🚀 Try Live Demo](https://scroll-forge.vercel.app/)** | **[👤 Follow Creator](https://github.com/ReyKan-KP)**
+  
+  Made with ❤️ by [ReyKan-KP (Kanishaka Pranjal)](https://github.com/ReyKan-KP)
+  
+</div>

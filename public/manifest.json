@@ -1,0 +1,93 @@
+{
+  "name": "ScrollForge - Open Source PDF to Website Converter",
+  "short_name": "ScrollForge",
+  "description": "Free open source PDF to HTML converter by ReyKan-KP. Transform PDFs into interactive websites instantly. Star on GitHub: github.com/ReyKan-KP/ScrollForge",
+  "developer": {
+    "name": "ReyKan-KP (Kanishaka Pranjal)",
+    "url": "https://github.com/ReyKan-KP"
+  },
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "education", "business"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop-1.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "label": "ScrollForge Homepage - PDF to Website Converter"
+    },
+    {
+      "src": "/screenshot-desktop-2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "label": "Upload PDF Interface"
+    },
+    {
+      "src": "/screenshot-mobile-1.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "label": "Mobile PDF Converter"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Upload PDF",
+      "short_name": "Upload",
+      "description": "Upload a PDF file to convert",
+      "url": "/upload",
+      "icons": [
+        {
+          "src": "/upload-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Load Previous",
+      "short_name": "Previous",
+      "description": "Access previously converted documents",
+      "url": "/load-previous",
+      "icons": [
+        {
+          "src": "/previous-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://scroll-forge.vercel.app/"
+    },
+    {
+      "platform": "github",
+      "url": "https://github.com/ReyKan-KP/ScrollForge"
+    }
+  ],
+  "prefer_related_applications": false,
+  "features": [
+    "PDF to HTML Conversion",
+    "Online PDF Viewer",
+    "Document Reader",
+    "No Download Required",
+    "Responsive Design",
+    "Multiple Themes",
+    "Secure Access"
+  ]
+}

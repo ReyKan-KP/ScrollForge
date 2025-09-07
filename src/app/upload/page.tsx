@@ -5,17 +5,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from "@/components/theme-toggle";
+import { FloatingGitHubButton } from "@/components/github-badge";
+import type { UploadResult } from "@/types";
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadResult, setUploadResult] = useState<{
-    success: boolean;
-    message: string;
-    token?: string;
-    total_pages?: number;
-  } | null>(null);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const router = useRouter();
@@ -47,8 +44,8 @@ export default function UploadPage() {
       });
       
       if (response.ok) {
-        // Token is valid, redirect to the pages overview
-        router.push('/page');
+        // Token is valid, redirect to home page which will show document info
+        router.push('/');
       } else {
         // Token is invalid, clear localStorage
         localStorage.removeItem('pdf_access_token');
@@ -163,7 +160,7 @@ export default function UploadPage() {
   };
 
   const handleViewPages = () => {
-    router.push('/page');
+    router.push('/');
   };
 
   const container = {
@@ -183,6 +180,7 @@ export default function UploadPage() {
 
   return (
     <div className={`min-h-screen bg-background text-foreground flex justify-center items-center`}>
+      <FloatingGitHubButton />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -516,19 +514,30 @@ export default function UploadPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          <p>ScrollForge • Convert and view your PDF documents in HTML format</p>
+          <p>ScrollForge • Open Source PDF Converter</p>
+          <p className="mt-1">
+            Created by{' '}
+            <a 
+              href="https://github.com/ReyKan-KP" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              ReyKan-KP
+            </a>
+            {' • '}
+            <a 
+              href="https://github.com/ReyKan-KP/ScrollForge" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              ⭐ Star on GitHub
+            </a>
+          </p>
         </motion.div>
       </motion.div>
       
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 }

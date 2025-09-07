@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Page() {
   const [documentInfo, setDocumentInfo] = useState<{
@@ -118,9 +119,7 @@ export default function Page() {
               transition={{ delay: 0.2 }}
               className="inline-flex items-center mb-4"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-primary mr-3" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-              </svg>
+              <Image src="/logo.png" alt="ScrollForge" width={100} height={100} />
               <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">ScrollForge</h1>
             </motion.div>
             <h2 className="text-2xl font-bold text-foreground mb-2">No Active Document</h2>
@@ -234,14 +233,7 @@ export default function Page() {
             className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-card backdrop-blur-md p-6 rounded-lg shadow-lg border border-border"
           >
             <div className="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-primary mr-3"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-              </svg>
+              <Image src="/logo.png" alt="ScrollForge" width={100} height={100} />
               <div>
                 <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                   ScrollForge
